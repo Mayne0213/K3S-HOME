@@ -12,7 +12,7 @@ spec:
       helm:
         valueFiles:
           - $values/promtail/helm-values/promtail.yaml
-    - repoURL: https://gitea0213.kro.kr/bluemayne/infrastructure.git
+    - repoURL: https://gitea0213.kro.kr/bluemayne/monitoring.git
       targetRevision: HEAD
       ref: values
   destination:

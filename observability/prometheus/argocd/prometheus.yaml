@@ -17,11 +17,11 @@ spec:
         valueFiles:
           - $values/prometheus/helm-values/kube-prometheus-stack.yaml
     # Values file from Git repository
-    - repoURL: https://gitea0213.kro.kr/bluemayne/infrastructure.git
+    - repoURL: https://gitea0213.kro.kr/bluemayne/monitoring.git
       targetRevision: main
       ref: values
     # Vault secrets from Git repository
-    - repoURL: https://gitea0213.kro.kr/bluemayne/infrastructure.git
+    - repoURL: https://gitea0213.kro.kr/bluemayne/monitoring.git
       targetRevision: main
       path: prometheus
 

@@ -17,7 +17,7 @@ spec:
         valueFiles:
           - $values/kube-state-metrics/helm-values/kube-state-metrics.yaml
     # Values file from Git repository
-    - repoURL: https://gitea0213.kro.kr/bluemayne/infrastructure.git
+    - repoURL: https://gitea0213.kro.kr/bluemayne/monitoring.git
       targetRevision: main
       ref: values
 
