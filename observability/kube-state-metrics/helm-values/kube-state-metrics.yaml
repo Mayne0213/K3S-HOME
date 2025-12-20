@@ -22,3 +22,9 @@ prometheus:
     relabelings:
       - targetLabel: cluster
         replacement: "mayne-cluster"
+    # exported_namespace를 namespace로 복사하여 모든 네임스페이스의 메트릭을 올바르게 표시
+    metricRelabelings:
+      - sourceLabels: [exported_namespace]
+        targetLabel: namespace
+        regex: (.+)
+        replacement: ${1}
