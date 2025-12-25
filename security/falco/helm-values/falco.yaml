@@ -1,10 +1,10 @@
 # Falco Helm Values
 # Chart: https://github.com/falcosecurity/charts/tree/master/charts/falco
 
-# Driver configuration - use eBPF for better compatibility
+# Driver configuration - use modern_ebpf (no compilation needed)
 driver:
   enabled: true
-  kind: ebpf  # or "module" for kernel module
+  kind: modern_ebpf  # Uses modern eBPF features, no driver compilation needed
 
 # Image configuration
 image:

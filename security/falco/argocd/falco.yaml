@@ -8,18 +8,79 @@ metadata:
 spec:
   project: default
 
-  sources:
+  source:
     # Helm chart from Falcosecurity repository
-    - repoURL: https://falcosecurity.github.io/charts
-      chart: falco
-      targetRevision: 4.14.2
-      helm:
-        valueFiles:
-          - $values/falco/helm-values/falco.yaml
-    # Values file from Git repository
-    - repoURL: https://gitea0213.kro.kr/bluemayne/cluster-infrastructure.git
-      targetRevision: main
-      ref: values
+    repoURL: https://falcosecurity.github.io/charts
+    chart: falco
+    targetRevision: 4.20.0
+    helm:
+      values: |
+        # Driver configuration - use modern_ebpf
+        driver:
+          enabled: true
+          kind: modern_ebpf
+
+        # Image configuration - use Falco 0.40.0 for kernel 6.14 support
+        image:
+          registry: docker.io
+          repository: falcosecurity/falco
+          tag: 0.40.0
+
+        # Resource requests
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+
+        # Falco configuration
+        falco:
+          json_output: true
+          json_include_output_property: true
+          log_stderr: true
+          log_syslog: false
+          log_level: info
+          rules_files:
+            - /etc/falco/falco_rules.yaml
+            - /etc/falco/falco_rules.local.yaml
+
+        # Metrics
+        metrics:
+          enabled: true
+
+        # Service Monitor
+        serviceMonitor:
+          enabled: true
+          interval: 30s
+
+        # Falcosidekick
+        falcosidekick:
+          enabled: true
+          config:
+            debug: false
+          webui:
+            enabled: true
+            replicaCount: 1
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+
+        # RBAC
+        rbac:
+          create: true
+
+        serviceAccount:
+          create: true
+          name: falco
+
+        tolerations:
+          - effect: NoSchedule
+            key: node-role.kubernetes.io/master
+          - effect: NoSchedule
+            key: node-role.kubernetes.io/control-plane
 
   destination:
     server: https://kubernetes.default.svc
@@ -36,6 +97,7 @@ spec:
       - PrunePropagationPolicy=foreground
       - PruneLast=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
 
     retry:
       limit: 5
@@ -43,5 +105,15 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m
+
+  # Ignore StatefulSet persistentVolumeClaimRetentionPolicy differences
+  # This field is set by Kubernetes but may differ from Helm chart expectations
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      name: falco-falcosidekick-ui-redis
+      namespace: falco
+      jqPathExpressions:
+        - .spec.persistentVolumeClaimRetentionPolicy
 
   revisionHistoryLimit: 10
