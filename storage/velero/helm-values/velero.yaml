@@ -34,7 +34,7 @@ nodeAgent:
   privileged: false
   resources:
     requests:
-      cpu: 100m
+      cpu: 30m  # Reduced to 30m to fit on mayne-worker-2 (99% CPU usage)
       memory: 256Mi
     limits:
       cpu: 1000m
@@ -92,6 +92,7 @@ schedules:
         # Non-essential namespaces (to save storage)
         - postgresql-dev  # Dev database not needed in disaster recovery
         - harbor          # Rebuildable container images
+        - minio           # Backup storage itself (prevents circular backup)
       snapshotVolumes: true
       defaultVolumesToFsBackup: true
 
