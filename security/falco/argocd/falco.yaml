@@ -89,7 +89,7 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: false  # Disabled to prevent constant sync due to StatefulSet PVC retention policy
       allowEmpty: false
 
     syncOptions:
