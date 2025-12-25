@@ -25,6 +25,21 @@ initContainers:
       - mountPath: /target
         name: plugins
 
+# Deploy node-agent for file-system backups
+deployNodeAgent: true
+
+# Node agent configuration
+nodeAgent:
+  podVolumePath: /var/lib/kubelet/pods
+  privileged: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
 # Configuration for backup storage
 configuration:
   # Use existing BackupStorageLocation and VolumeSnapshotLocation
@@ -45,7 +60,10 @@ configuration:
         region: minio
 
   # Default backup retention
-  defaultBackupTTL: 720h  # 30 days
+  defaultBackupTTL: 168h  # 7 days (reduced for storage efficiency)
+
+  # Enable file-system backup by default for all PVs
+  defaultVolumesToFsBackup: true
 
   # Restore only mode (for disaster recovery)
   restoreOnlyMode: false
@@ -58,19 +76,24 @@ credentials:
 
 # Backup schedules
 schedules:
-  # Daily full cluster backup
-  daily-backup:
+  # Weekly full cluster backup
+  weekly-backup:
     disabled: false
-    schedule: "0 2 * * *"  # 2 AM daily
+    schedule: "0 19 * * 4"  # Every Friday 4 AM KST (Thursday 19:00 UTC)
     template:
       ttl: 720h  # 30 days
       includedNamespaces:
         - "*"
       excludedNamespaces:
+        # System namespaces
         - kube-system
         - kube-public
         - kube-node-lease
+        # Non-essential namespaces (to save storage)
+        - postgresql-dev  # Dev database not needed in disaster recovery
+        - harbor          # Rebuildable container images
       snapshotVolumes: true
+      defaultVolumesToFsBackup: true
 
 # Metrics
 metrics:
