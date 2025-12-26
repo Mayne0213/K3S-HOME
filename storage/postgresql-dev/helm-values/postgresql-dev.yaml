@@ -26,7 +26,9 @@ resources:
   requests:
     memory: "256Mi"
     cpu: "30m"  # Reduced to 30% of original (100m -> 30m)
-  limits: {}  # Empty limits to prevent Helm chart defaults in standalone mode
+  limits:
+    cpu: null
+    memory: null
 
 metrics:
   enabled: false
