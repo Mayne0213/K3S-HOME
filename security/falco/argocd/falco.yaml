@@ -32,6 +32,7 @@ spec:
             cpu: 100m
             memory: 256Mi
           limits:
+            cpu: null  # Delete Helm chart default CPU limit
             memory: 1Gi
 
         # Falco configuration
