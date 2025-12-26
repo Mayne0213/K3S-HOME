@@ -32,7 +32,7 @@ spec:
             cpu: 100m
             memory: 256Mi
           limits:
-            # cpu: removed to prevent throttling
+            cpu: null  # Explicitly set to null to remove CPU throttling
             memory: 1Gi
 
         # Falco configuration
