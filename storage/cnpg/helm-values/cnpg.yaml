@@ -33,6 +33,12 @@ monitoring:
   # Enable Prometheus PodMonitor
   podMonitorEnabled: true
 
+  # Enable Grafana Dashboard auto-creation
+  grafanaDashboard:
+    create: true
+    labels:
+      grafana_dashboard: "1"  # Label for Grafana sidecar to discover dashboards
+
 # Webhook configuration
 webhook:
   port: 9443
