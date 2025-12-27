@@ -140,6 +140,19 @@ falcosidekick:
         # cpu: removed to prevent throttling
         memory: 512Mi
 
+    # Environment variables from Vault secret
+    env:
+      - name: FALCOSIDEKICK_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: falco-ui-secret
+            key: username
+      - name: FALCOSIDEKICK_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: falco-ui-secret
+            key: password
+
 # RBAC
 rbac:
   create: true
