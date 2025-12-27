@@ -9,4 +9,5 @@ resources:
   # External Secrets integration
   # ServiceAccount is managed by external-secrets Helm chart
   - cluster-secret-store.yaml
+  - vault-postgres-secret.yaml
   # vault-config-job.yaml은 삭제됨 (민감한 정보 포함으로 인해 .md 파일로 대체)

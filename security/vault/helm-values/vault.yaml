@@ -7,20 +7,47 @@ global:
 
 server:
   enabled: true
-  
-  # Dev 모드 (시작하기 쉽게, 나중에 production 모드로 변경 가능)
+
+  # Production 모드 - PostgreSQL backend 사용
   dev:
+    enabled: false
+
+  # Standalone mode with PostgreSQL backend
+  standalone:
     enabled: true
-    devRootToken: "root"  # 초기 root 토큰 (나중에 변경 권장)
-  
+    config: |
+      ui = true
+
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+
+      storage "postgresql" {
+        connection_url = "postgres://vault:${VAULT_POSTGRES_PASSWORD}@postgresql-cnpg-rw.postgresql-cnpg.svc.cluster.local:5432/vault?sslmode=disable"
+      }
+
+      # Optional: Enable Prometheus metrics
+      telemetry {
+        prometheus_retention_time = "30s"
+        disable_hostname = true
+      }
+
+  # Environment variables from secrets
+  extraSecretEnvironmentVars:
+    - envName: VAULT_POSTGRES_PASSWORD
+      secretName: vault-postgres-password
+      secretKey: password
+
   # 리소스 제한
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 100m
+      memory: 256Mi
     limits:
       memory: 512Mi
-  
+
   # Ingress 설정
   ingress:
     enabled: true
@@ -33,11 +60,11 @@ server:
       - secretName: vault-tls
         hosts:
           - vault0213.kro.kr
-  
+
   # 고가용성 비활성화 (단일 인스턴스)
   ha:
     enabled: false
-  
+
   # 서비스 타입
   service:
     enabled: true
