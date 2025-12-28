@@ -1,0 +1,47 @@
+# VPA Helm Values
+# Reference: https://github.com/FairwindsOps/charts/tree/master/stable/vpa
+
+# Recommender - recommends resource requests based on historical usage
+recommender:
+  enabled: true
+  replicaCount: 1
+
+  resources:
+    limits:
+      cpu: null
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 512Mi
+
+# Updater - applies recommended resource requests to pods
+updater:
+  enabled: true
+  replicaCount: 1
+
+  resources:
+    limits:
+      cpu: null
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 512Mi
+
+# Admission Controller - injects resource requests into new pods
+admissionController:
+  enabled: true
+  replicaCount: 1
+
+  resources:
+    limits:
+      cpu: null
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+
+  # Generate self-signed certificate
+  generateCertificate: true
+
+# Optional: Configure default VPA behavior
+# metrics-server should be installed in the cluster
