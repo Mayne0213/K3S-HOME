@@ -45,7 +45,7 @@ server:
   # Ingress 설정
   ingress:
     enabled: true
-    ingressClassName: haproxy
+    ingressClassName: traefik
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
