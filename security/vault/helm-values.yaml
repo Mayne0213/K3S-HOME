@@ -51,6 +51,8 @@ server:
   ingress:
     enabled: true
     ingressClassName: haproxy
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
       - host: vault0213.kro.kr
         paths:
