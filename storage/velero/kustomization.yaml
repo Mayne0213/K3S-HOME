@@ -3,11 +3,7 @@ kind: Kustomization
 
 resources:
   # argocd.yaml files은 수동으로 관리 (순환 참조 방지)
-  # - argocd-velero.yaml
-  # - argocd-ui.yaml
   - namespace.yaml
-
-  # Velero credentials from Vault
   - external-secret.yaml
   - vault/velero-ui-secret.yaml
   - ingress.yaml
