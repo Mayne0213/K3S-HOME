@@ -51,11 +51,14 @@ configMap:
         authelia_url: https://auth.mayne0213.kro.kr
         default_redirection_url: https://mayne.kro.kr
 
-  # Storage - local SQLite (lightweight)
+  # Storage - PostgreSQL (CNPG cluster)
   storage:
-    local:
+    postgres:
       enabled: true
-      path: /data/db.sqlite3
+      address: tcp://postgresql-rw.postgresql.svc.cluster.local:5432
+      database: authelia
+      username: app
+      timeout: 5s
 
   # Access control rules
   access_control:
@@ -95,8 +98,4 @@ configMap:
 secret:
   existingSecret: authelia-secrets
 
-# Persistence for SQLite database
-persistence:
-  enabled: true
-  storageClass: longhorn
-  size: 1Gi
+# No persistence needed - using PostgreSQL
