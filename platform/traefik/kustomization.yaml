@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
   - helm-values.yaml
-  - coredns-config.yaml
   - ingress.yaml
