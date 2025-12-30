@@ -74,30 +74,6 @@ credentials:
   existingSecret: velero-s3-credentials
   secretContents: {}
 
-# Backup schedules
-schedules:
-  # Weekly full cluster backup
-  weekly-backup:
-    disabled: false
-    schedule: "0 19 * * 4"  # Every Friday 4 AM KST (Thursday 19:00 UTC)
-    template:
-      ttl: 720h  # 30 days
-      includedNamespaces:
-        - "*"
-      excludedNamespaces:
-        # System namespaces
-        - kube-system
-        - kube-public
-        - kube-node-lease
-        # Non-essential namespaces (to save storage)
-        - postgresql-dev  # Dev database not needed in disaster recovery
-        - harbor          # Rebuildable container images
-        # Note: minio namespace is now included in backup
-        # MinIO PVC data is excluded via pod annotation (backup.velero.io/backup-volumes-excludes)
-        # This backs up MinIO resources but not the data (prevents circular backup)
-      snapshotVolumes: true
-      defaultVolumesToFsBackup: true
-
 # Metrics
 metrics:
   enabled: true
