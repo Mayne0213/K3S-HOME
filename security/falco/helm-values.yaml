@@ -114,9 +114,9 @@ falcosidekick:
     #   webhookurl: ""
     #   minimumpriority: "warning"
 
-  # Falcosidekick Web UI (disabled to save ~535MB Redis memory)
+  # Falcosidekick Web UI
   webui:
-    enabled: false
+    enabled: true
     replicaCount: 1
 
     service:
@@ -140,6 +140,14 @@ falcosidekick:
       limits:
         # cpu: removed to prevent throttling
         memory: 512Mi
+
+    redis:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 128Mi
 
     # Use custom secret for authentication
     existingSecret: falco-ui-secret
