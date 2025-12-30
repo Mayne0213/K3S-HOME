@@ -73,3 +73,9 @@ spec:
   enableSuperuserAccess: true
   superuserSecret:
     name: postgresql-superuser
+
+  # Managed databases
+  managed:
+    databases:
+      - name: authentik
+        owner: app
