@@ -11,7 +11,7 @@ data:
       admin:
         disabled: false
         displayname: "Admin"
-        email: admin@mayne0213.kro.kr
+        email: admin@mayne.kro.kr
         password: "$argon2id$v=19$m=65536,t=3,p=4$PHApThq3PclXyjhly4bAwA$ZdC+5EEshnK/MDsQb2fUfpujG3ujcFM7APmqrMgXjsE"
         groups:
           - admins

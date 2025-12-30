@@ -9,10 +9,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - auth.mayne0213.kro.kr
+        - auth0213.kro.kr
       secretName: authelia-tls
   rules:
-    - host: auth.mayne0213.kro.kr
+    - host: auth0213.kro.kr
       http:
         paths:
           - path: /
