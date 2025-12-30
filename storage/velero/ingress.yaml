@@ -5,6 +5,7 @@ metadata:
   namespace: velero
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia-auth@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
@@ -19,6 +20,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: oauth2-proxy
+                name: velero-ui
                 port:
-                  number: 4180
+                  number: 3000
