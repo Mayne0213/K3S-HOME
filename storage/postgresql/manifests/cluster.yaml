@@ -74,8 +74,4 @@ spec:
   superuserSecret:
     name: postgresql-superuser
 
-  # Managed databases
-  managed:
-    databases:
-      - name: authentik
-        owner: app
+  # Note: authentik database created manually (CNPG managed databases not supported in this version)
