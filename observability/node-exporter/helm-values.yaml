@@ -32,5 +32,4 @@ prometheus:
         replacement: "mayne-cluster"
 
 tolerations:
-  - effect: NoSchedule
-    operator: Exists
+  - operator: Exists
