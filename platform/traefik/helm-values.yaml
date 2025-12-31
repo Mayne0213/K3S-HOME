@@ -9,6 +9,22 @@ spec:
     deployment:
       replicas: 3
 
+    # Pod Anti-Affinity - 각 노드에 최대 1개씩만 배치
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: traefik
+            topologyKey: kubernetes.io/hostname
+
+    # Master 노드에도 배치 허용
+    tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+
     # Traefik Dashboard 활성화
     dashboard:
       enabled: true
@@ -23,3 +39,8 @@ spec:
       traefik:
         expose:
           default: true
+
+    # svclb tolerations for master node
+    service:
+      annotations:
+        svccontroller.k3s.cattle.io/tolerations: '[{"key":"node-role.kubernetes.io/master","operator":"Exists","effect":"NoExecute"}]'
