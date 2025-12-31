@@ -41,3 +41,71 @@ spec:
       labels:
         goldilocks.fairwinds.com/enabled: 'true'
   revisionHistoryLimit: 10
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: trivy-ui
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://locustbaby.github.io/trivy-ui/
+    chart: trivy-ui
+    targetRevision: '*'
+    helm:
+      values: |
+        replicaCount: 1
+
+        image:
+          repository: locustbaby/trivy-ui
+          pullPolicy: IfNotPresent
+          tag: "v0.0.2"
+
+        serviceAccount:
+          create: true
+
+        service:
+          type: ClusterIP
+          port: 80
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
+
+        env:
+          KUBECONFIG_DIR: "/kubeconfigs"
+          STATIC_PATH: "trivy-dashboard/dist"
+          DEBUG: "false"
+
+        kubeconfigs:
+          create: false
+
+        rbac:
+          create: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: trivy-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+    managedNamespaceMetadata:
+      labels:
+        goldilocks.fairwinds.com/enabled: 'true'
+  revisionHistoryLimit: 10
