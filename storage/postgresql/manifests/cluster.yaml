@@ -19,7 +19,7 @@ spec:
   resources:
     requests:
       memory: "512Mi"
-      cpu: "150m"
+      cpu: "30m"  # Reduced from 150m (actual usage: 9-13m)
     limits:
       memory: "2Gi"
       # cpu: no limit to prevent throttling
