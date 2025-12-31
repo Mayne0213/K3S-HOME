@@ -45,6 +45,13 @@ spec:
         goldilocks.fairwinds.com/enabled: 'true'
   revisionHistoryLimit: 10
   ignoreDifferences:
+  - group: ""
+    kind: ServiceAccount
+    name: longhorn-service-account
+    jsonPointers:
+    - /metadata/resourceVersion
+    - /metadata/uid
+    - /secrets
   - group: apiextensions.k8s.io
     kind: CustomResourceDefinition
     name: engines.longhorn.io
