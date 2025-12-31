@@ -49,7 +49,8 @@ longhornManager:
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
       effect: "NoExecute"
-  nodeSelector: {}
+  nodeSelector:
+    longhorn: "enabled"  # worker-1 제외
 
 # Longhorn Driver (CSI driver)
 longhornDriver:
@@ -58,7 +59,8 @@ longhornDriver:
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
       effect: "NoExecute"
-  nodeSelector: {}
+  nodeSelector:
+    longhorn: "enabled"  # worker-1 제외
 
 # Longhorn UI
 longhornUI:
