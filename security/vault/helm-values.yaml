@@ -72,6 +72,12 @@ server:
     type: ClusterIP
     port: 8200
 
+  # Tolerations for master node
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoExecute"
+
 # UI 활성화
 ui:
   enabled: true
