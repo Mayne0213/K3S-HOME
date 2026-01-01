@@ -92,7 +92,7 @@ configMap:
       clients:
         - client_id: minio
           client_name: MinIO Console
-          client_secret: '{{ secret "/secrets/oidc/MINIO_CLIENT_SECRET" }}'
+          client_secret: '$plaintext${{ secret "/secrets/oidc/MINIO_CLIENT_SECRET" }}'
           authorization_policy: one_factor
           redirect_uris:
             - https://minio.minio0213.kro.kr/oauth_callback
