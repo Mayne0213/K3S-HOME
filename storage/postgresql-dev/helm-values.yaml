@@ -21,7 +21,7 @@ primary:
   persistence:
     enabled: true
     size: 1Gi
-    storageClass: longhorn
+    storageClass: local-path-retain
 
 resources:
   requests:
