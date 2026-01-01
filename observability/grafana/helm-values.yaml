@@ -67,11 +67,6 @@ dashboards:
       gnetId: 1860
       revision: 37
       datasource: Prometheus
-    # Kubernetes Cluster Overview
-    kubernetes-views-global:
-      gnetId: 15760
-      revision: 28
-      datasource: Prometheus
     # Kubernetes Namespaces
     kubernetes-views-namespaces:
       gnetId: 15758
