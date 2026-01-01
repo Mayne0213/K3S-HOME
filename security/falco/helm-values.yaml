@@ -117,6 +117,7 @@ falcosidekick:
   webui:
     enabled: true
     replicaCount: 1
+    disableauth: true  # Disable basic auth - using Authelia SSO
 
     service:
       type: ClusterIP
