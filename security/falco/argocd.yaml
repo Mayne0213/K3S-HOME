@@ -7,78 +7,20 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: https://falcosecurity.github.io/charts
+  sources:
+  - repoURL: https://falcosecurity.github.io/charts
     chart: falco
     targetRevision: 4.20.0
     helm:
-      values: |
-        # Driver configuration - use modern_ebpf
-        driver:
-          enabled: true
-          kind: modern_ebpf
-
-        # Image configuration - use Falco 0.40.0 for kernel 6.14 support
-        image:
-          registry: docker.io
-          repository: falcosecurity/falco
-          tag: 0.40.0
-
-        # Resource requests
-        resources:
-          requests:
-            cpu: 30m
-            memory: 256Mi
-          limits:
-            cpu: null  # Delete Helm chart default CPU limit
-            memory: 1Gi
-
-        # Falco configuration
-        falco:
-          json_output: true
-          json_include_output_property: true
-          log_stderr: true
-          log_syslog: false
-          log_level: info
-          rules_files:
-            - /etc/falco/falco_rules.yaml
-            - /etc/falco/falco_rules.local.yaml
-
-        # Metrics
-        metrics:
-          enabled: true
-
-        # Service Monitor
-        serviceMonitor:
-          enabled: true
-          interval: 30s
-
-        # Falcosidekick
-        falcosidekick:
-          enabled: true
-          config:
-            debug: false
-          webui:
-            enabled: true
-            replicaCount: 1
-            resources:
-              requests:
-                cpu: 30m
-                memory: 128Mi
-
-        # RBAC
-        rbac:
-          create: true
-
-        serviceAccount:
-          create: true
-          name: falco
-
-        tolerations:
-          - effect: NoSchedule
-            key: node-role.kubernetes.io/master
-          - effect: NoSchedule
-            key: node-role.kubernetes.io/control-plane
+      valueFiles:
+      - $values/falco/helm-values.yaml
+  - repoURL: https://github.com/Mayne0213/cluster-infrastructure.git
+    targetRevision: main
+    ref: values
+  - repoURL: https://github.com/Mayne0213/cluster-infrastructure.git
+    targetRevision: main
+    path: falco
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: falco
