@@ -5,12 +5,21 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
-    # 3 replicas for HA
+    # 2 replicas (mayne-worker-1 has issues)
     deployment:
-      replicas: 3
+      replicas: 2
 
     # Pod Anti-Affinity - 각 노드에 최대 1개씩만 배치
+    # Node Affinity - mayne-worker-1 제외 (Traefik API 문제)
     affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: NotIn
+                  values:
+                    - mayne-worker-1
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
