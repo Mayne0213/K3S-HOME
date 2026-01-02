@@ -22,14 +22,13 @@ primary:
     enabled: true
     size: 1Gi
     storageClass: local-path-retain
-
-resources:
-  requests:
-    memory: "256Mi"
-    cpu: "30m"  # Reduced to 30% of original (100m -> 30m)
-  limits:
-    cpu: null
-    memory: null
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "30m"
+    limits:
+      cpu: null
+      memory: "256Mi"
 
 metrics:
   enabled: false
