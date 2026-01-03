@@ -143,6 +143,7 @@ falcosidekick:
     enabled: true
     replicaCount: 1
     disableauth: true  # Disable basic auth - using Authelia SSO
+    ttl: 21600  # 6 hours - events older than this are auto-deleted
 
     service:
       type: ClusterIP
