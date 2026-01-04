@@ -64,7 +64,7 @@ chunksCache:
 resultsCache:
   enabled: false
 
-# Disable monitoring components
+# Monitoring
 monitoring:
   selfMonitoring:
     enabled: false
@@ -72,6 +72,14 @@ monitoring:
       installOperator: false
   lokiCanary:
     enabled: false
+  serviceMonitor:
+    enabled: true
+    interval: 60s
+    labels:
+      release: prometheus
+    relabelings:
+      - targetLabel: cluster
+        replacement: "mayne-cluster"
 
 # Test disabled
 test:
