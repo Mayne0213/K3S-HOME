@@ -35,6 +35,10 @@ falco:
   # Performance tuning
   buffered_outputs: true
 
+  # Rate limiting - reduce duplicate alerts
+  outputs_rate: 1        # Max 1 alert per second per rule
+  outputs_max_burst: 10  # Allow burst of 10 alerts
+
   # Rules configuration
   rules_files:
     - /etc/falco/falco_rules.yaml
@@ -129,6 +133,12 @@ falcosidekick:
   config:
     # Output to stdout/logs
     debug: false
+
+    # Loki integration - send events directly to Loki
+    loki:
+      hostport: "http://loki.loki.svc.cluster.local:3100"
+      minimumpriority: ""  # Send all priorities
+      format: "json"  # JSON format for easier parsing in Grafana
 
     # Slack integration (optional)
     # slack:
