@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - application.yaml
+  - prometheus/argocd.yaml
+  - alertmanager/argocd.yaml
+  - grafana/argocd.yaml
+  - loki/argocd.yaml
+  - promtail/argocd.yaml
+  - node-exporter/argocd.yaml
+  - kube-state-metrics/argocd.yaml
+  - goldilocks/argocd.yaml
+  - uptime-kuma/argocd.yaml
+  - vpa/argocd.yaml

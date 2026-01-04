@@ -12,8 +12,8 @@ spec:
     helm:
       valueFiles:
       - $values/loki/helm-values.yaml
-  - repoURL: https://github.com/K3S-HOME/monitoring.git
-    targetRevision: HEAD
+  - repoURL: https://github.com/K3S-HOME/observability.git
+    targetRevision: main
     ref: values
   destination:
     server: https://kubernetes.default.svc
