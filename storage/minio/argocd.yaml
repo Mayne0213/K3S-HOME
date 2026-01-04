@@ -14,10 +14,10 @@ spec:
     helm:
       valueFiles:
       - $values/minio/helm-values.yaml
-  - repoURL: https://github.com/K3S-HOME/databases.git
+  - repoURL: https://github.com/K3S-HOME/storage.git
     targetRevision: main
     ref: values
-  - repoURL: https://github.com/K3S-HOME/databases.git
+  - repoURL: https://github.com/K3S-HOME/storage.git
     targetRevision: main
     path: minio
   destination:
