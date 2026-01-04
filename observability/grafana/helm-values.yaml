@@ -46,6 +46,13 @@ datasources:
       access: proxy
       url: http://loki.loki.svc.cluster.local:3100
       editable: true
+    - name: Alertmanager
+      type: alertmanager
+      access: proxy
+      url: http://alertmanager.alertmanager.svc.cluster.local:9093
+      editable: true
+      jsonData:
+        implementation: prometheus
 
 dashboardProviders:
   dashboardproviders.yaml:
