@@ -54,7 +54,7 @@ Use component names as scope:
 | **observability** | alertmanager, goldilocks, grafana, karma, loki, prometheus, promtail, uptime-kuma |
 | **platform** | argocd, cert-manager, coredns, traefik |
 | **security** | authelia, external-secrets, falco, trivy, vault |
-| **storage** | cnpg, longhorn, minio, pgweb, postgresql, velero |
+| **storage** | cnpg, minio, pgweb, postgresql, velero, zot |
 | **web-apps** | jaejadle, joossam, jotion, jovies, mas, portfolio, todo |
 
 Special scopes:
