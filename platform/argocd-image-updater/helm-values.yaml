@@ -1,0 +1,28 @@
+# ArgoCD Image Updater Helm Values
+
+# Configuration for Zot private registry
+config:
+  logLevel: debug
+  registries:
+    - name: zot
+      prefix: zot0213.kro.kr
+      api_url: https://zot0213.kro.kr
+      credentials: pullsecret:argocd/zot-registry-credentials
+      insecure: false
+
+# Resource limits
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
+
+# Tolerations for master node
+tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoExecute"
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"

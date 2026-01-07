@@ -7,5 +7,14 @@ resources:
   - cert-manager/argocd.yaml
   - traefik/argocd.yaml
 
+  # Tekton CI/CD Platform
+  - tekton/pipeline/argocd.yaml
+  - tekton/triggers/argocd.yaml
+  - tekton/dashboard/argocd.yaml
+  - tekton/ci-cd/argocd.yaml
+
+  # ArgoCD Image Updater
+  - argocd-image-updater/argocd.yaml
+
   # ArgoCD configuration (no Application, just configuration)
   - argocd
