@@ -12,3 +12,5 @@ resources:
   - pipelines/nextjs-pipeline.yaml
   - pipelines/fastapi-pipeline.yaml
   - pipelines/python-pipeline.yaml
+  # Triggers
+  - triggers/
