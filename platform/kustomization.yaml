@@ -2,16 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  # App of Apps Application
+  # Platform self-reference
   - application.yaml
+
+  # Core infrastructure
   - cert-manager/argocd.yaml
   - traefik/argocd.yaml
-
-  # ArgoCD Image Updater
   - argocd-image-updater/argocd.yaml
-
-  # ArgoCD self-management Application
   - argocd/argocd.yaml
-
-  # Web Apps (App of Apps)
-  - web-apps/argocd.yaml
