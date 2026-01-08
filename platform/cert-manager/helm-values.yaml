@@ -4,7 +4,7 @@
 # Install CRDs with Helm
 installCRDs: true
 
-replicaCount: 1
+replicaCount: 2
 
 resources:
   requests:
@@ -14,7 +14,7 @@ resources:
     memory: 96Mi
 
 webhook:
-  replicaCount: 1
+  replicaCount: 2
   resources:
     requests:
       cpu: 15m
@@ -23,13 +23,46 @@ webhook:
       memory: 96Mi
 
 cainjector:
-  replicaCount: 1
+  replicaCount: 2
   resources:
     requests:
       cpu: 15m
       memory: 64Mi
     limits:
       memory: 96Mi
+
+# Affinity - Soft Anti-Affinity to spread pods across nodes
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: cert-manager
+          topologyKey: kubernetes.io/hostname
+
+webhook:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: cert-manager-webhook
+            topologyKey: kubernetes.io/hostname
+
+cainjector:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: cert-manager-cainjector
+            topologyKey: kubernetes.io/hostname
 
 # Prometheus metrics
 prometheus:
