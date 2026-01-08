@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- manifests/namespace.yaml
-- manifests/argocd-cm.yaml
-- manifests/argocd-rbac-cm.yaml
-- manifests/argocd-cmd-params-cm.yaml
-- manifests/ingress.yaml
+  # ArgoCD Application (self-managed via Helm chart)
+  - argocd.yaml
+  # Additional manifests (applied alongside Helm chart)
+  - manifests/namespace.yaml
+  - manifests/webhook-ingress.yaml

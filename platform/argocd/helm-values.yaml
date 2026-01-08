@@ -1,0 +1,141 @@
+# ArgoCD Helm Chart Values
+# Chart: https://argoproj.github.io/argo-helm (argo-cd)
+# All custom settings from current cluster deployment
+
+# =============================================================================
+# GLOBAL SETTINGS
+# =============================================================================
+global:
+  # Deploy to master node
+  nodeSelector:
+    node-role.kubernetes.io/master: "true"
+
+  # Tolerate control-plane taint
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+# =============================================================================
+# CONFIGS (ConfigMaps)
+# =============================================================================
+configs:
+  # argocd-cm
+  cm:
+    # Authelia handles authentication, so allow anonymous access
+    users.anonymous.enabled: "true"
+    # Disable polling - webhook only
+    timeout.reconciliation: "0"
+    # Ignore resource status field differences
+    resource.compareoptions: |
+      ignoreResourceStatusField: all
+
+  # argocd-cmd-params-cm
+  params:
+    # Ingress handles TLS, so run in insecure mode
+    server.insecure: "true"
+    # Disable periodic app resync (webhook + self-heal only)
+    controller.self.heal.timeout.seconds: "5"
+
+  # argocd-rbac-cm
+  rbac:
+    # Anonymous users get admin role (Authelia handles authentication)
+    policy.csv: |
+      g, , role:admin
+    policy.default: role:admin
+
+# =============================================================================
+# APPLICATION CONTROLLER (StatefulSet)
+# =============================================================================
+controller:
+  # Memory optimization environment variables
+  env:
+    - name: GOMEMLIMIT
+      value: "400MiB"
+    - name: GOGC
+      value: "50"
+
+  # Disable periodic app resync
+  args:
+    appResyncPeriod: "0"
+
+  # Resource settings (from VPA recommendations)
+  resources:
+    requests:
+      cpu: 126m
+      memory: 1700Mi
+    limits:
+      memory: 2500Mi
+
+# =============================================================================
+# API SERVER (Deployment)
+# =============================================================================
+server:
+  # Main Ingress with Authelia middleware
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia-auth@kubernetescrd
+    hosts:
+      - argocd0213.kro.kr
+    tls:
+      - secretName: argocd-server-tls
+        hosts:
+          - argocd0213.kro.kr
+
+  # Resource settings
+  resources:
+    requests:
+      cpu: 15m
+      memory: 138Mi
+    limits:
+      memory: 207Mi
+
+# =============================================================================
+# REPO SERVER (Deployment)
+# =============================================================================
+repoServer:
+  resources:
+    requests:
+      cpu: 15m
+      memory: 640Mi
+    limits:
+      memory: 960Mi
+
+# =============================================================================
+# REDIS (Deployment)
+# =============================================================================
+redis:
+  resources:
+    requests:
+      cpu: 15m
+      memory: 100Mi
+    limits:
+      memory: 150Mi
+
+# =============================================================================
+# DEX (OIDC) - Disabled (using Authelia instead)
+# =============================================================================
+dex:
+  enabled: false
+
+# =============================================================================
+# APPLICATIONSET CONTROLLER - Disabled (not used)
+# =============================================================================
+applicationSet:
+  enabled: false
+
+# =============================================================================
+# NOTIFICATIONS CONTROLLER - Disabled (not used)
+# =============================================================================
+notifications:
+  enabled: false
+
+# =============================================================================
+# CRDs
+# =============================================================================
+crds:
+  install: true
+  keep: true
