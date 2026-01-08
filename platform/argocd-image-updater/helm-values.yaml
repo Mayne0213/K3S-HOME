@@ -18,11 +18,8 @@ resources:
   limits:
     memory: 256Mi
 
-# Tolerations for master node
+# Tolerations for control-plane node
 tolerations:
-  - key: "node-role.kubernetes.io/master"
-    operator: "Exists"
-    effect: "NoExecute"
   - key: "node-role.kubernetes.io/control-plane"
     operator: "Exists"
     effect: "NoSchedule"

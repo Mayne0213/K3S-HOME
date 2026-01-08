@@ -28,10 +28,8 @@ spec:
                   app.kubernetes.io/name: traefik
               topologyKey: kubernetes.io/hostname
 
-    # Master 노드에도 배치 허용
+    # Control-plane 노드에도 배치 허용
     tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
 
@@ -58,10 +56,10 @@ spec:
         expose:
           default: true
 
-    # svclb tolerations for master node
+    # svclb tolerations for control-plane node
     service:
       annotations:
-        svccontroller.k3s.cattle.io/tolerations: '[{"key":"node-role.kubernetes.io/master","operator":"Exists","effect":"NoExecute"}]'
+        svccontroller.k3s.cattle.io/tolerations: '[{"key":"node-role.kubernetes.io/control-plane","operator":"Exists","effect":"NoSchedule"}]'
 
     # Prometheus metrics
     metrics:
