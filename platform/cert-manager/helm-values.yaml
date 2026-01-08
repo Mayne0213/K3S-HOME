@@ -21,28 +21,7 @@ webhook:
       memory: 64Mi
     limits:
       memory: 96Mi
-
-cainjector:
-  replicaCount: 2
-  resources:
-    requests:
-      cpu: 15m
-      memory: 64Mi
-    limits:
-      memory: 96Mi
-
-# Affinity - Soft Anti-Affinity to spread pods across nodes
-affinity:
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: cert-manager
-          topologyKey: kubernetes.io/hostname
-
-webhook:
+  # Affinity - Soft Anti-Affinity to spread pods across nodes
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -54,6 +33,14 @@ webhook:
             topologyKey: kubernetes.io/hostname
 
 cainjector:
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 15m
+      memory: 64Mi
+    limits:
+      memory: 96Mi
+  # Affinity - Soft Anti-Affinity to spread pods across nodes
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -63,6 +50,17 @@ cainjector:
               matchLabels:
                 app.kubernetes.io/name: cert-manager-cainjector
             topologyKey: kubernetes.io/hostname
+
+# Affinity - Soft Anti-Affinity to spread pods across nodes
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: cert-manager
+          topologyKey: kubernetes.io/hostname
 
 # Prometheus metrics
 prometheus:
