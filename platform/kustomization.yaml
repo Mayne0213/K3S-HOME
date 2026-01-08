@@ -10,5 +10,5 @@ resources:
   # ArgoCD Image Updater
   - argocd-image-updater/argocd.yaml
 
-  # ArgoCD configuration (no Application, just configuration)
-  - argocd
+  # ArgoCD self-management Application
+  - argocd/argocd.yaml

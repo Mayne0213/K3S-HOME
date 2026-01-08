@@ -6,9 +6,9 @@
 # GLOBAL SETTINGS
 # =============================================================================
 global:
-  # Deploy to master node
+  # Deploy to control-plane node
   nodeSelector:
-    node-role.kubernetes.io/master: "true"
+    node-role.kubernetes.io/control-plane: "true"
 
   # Tolerate control-plane taint
   tolerations:
@@ -75,15 +75,11 @@ server:
   ingress:
     enabled: true
     ingressClassName: traefik
+    hostname: argocd0213.kro.kr
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia-auth@kubernetescrd
-    hosts:
-      - argocd0213.kro.kr
-    tls:
-      - secretName: argocd-server-tls
-        hosts:
-          - argocd0213.kro.kr
+    tls: true
 
   # Resource settings
   resources:
