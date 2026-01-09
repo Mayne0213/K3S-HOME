@@ -48,6 +48,13 @@ configs:
 # APPLICATION CONTROLLER (StatefulSet)
 # =============================================================================
 controller:
+  # Metrics for Prometheus
+  metrics:
+    enabled: true
+    service:
+      enabled: true
+      servicePort: 8082
+
   # Memory optimization environment variables
   env:
     - name: GOMEMLIMIT
@@ -71,6 +78,13 @@ controller:
 # API SERVER (Deployment)
 # =============================================================================
 server:
+  # Metrics for Prometheus
+  metrics:
+    enabled: true
+    service:
+      enabled: true
+      servicePort: 8083
+
   # Main Ingress with Authelia middleware
   ingress:
     enabled: true
@@ -93,6 +107,13 @@ server:
 # REPO SERVER (Deployment)
 # =============================================================================
 repoServer:
+  # Metrics for Prometheus
+  metrics:
+    enabled: true
+    service:
+      enabled: true
+      servicePort: 8084
+
   resources:
     requests:
       cpu: 15m
