@@ -16,30 +16,60 @@ spec:
         app: gitea-runner
     spec:
       containers:
+      # Docker-in-Docker sidecar
+      - name: dind
+        image: docker:dind
+        securityContext:
+          privileged: true
+        env:
+        - name: DOCKER_TLS_CERTDIR
+          value: ""
+        volumeMounts:
+        - name: docker-graph
+          mountPath: /var/lib/docker
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
+      # Gitea Actions Runner
       - name: runner
         image: gitea/act_runner:latest
         command:
         - sh
         - -c
         - |
+          # Wait for Docker to be ready
+          echo "Waiting for Docker daemon..."
+          while ! docker info > /dev/null 2>&1; do
+            sleep 2
+          done
+          echo "Docker is ready!"
+
+          # Wait for Gitea to be ready
           while ! wget -q --spider http://gitea-http.gitea.svc:3000/api/v1/version; do
             echo "Waiting for Gitea to be ready..."
             sleep 5
           done
-          act_runner register --no-interactive \
-            --instance https://github0213.com \
-            --token $(cat /secrets/token) \
-            --name k3s-runner \
-            --labels k3s-home:docker://node:20-alpine,ubuntu-latest:docker://ubuntu:latest,arm64:host
+          echo "Gitea is ready!"
+
+          # Register runner if not already registered
+          if [ ! -f /data/.runner ]; then
+            act_runner register --no-interactive \
+              --instance https://github0213.com \
+              --token $(cat /secrets/token) \
+              --name k3s-runner \
+              --labels k3s-home:docker://node:20-alpine,ubuntu-latest:docker://ubuntu:latest,arm64:host
+          fi
+
           act_runner daemon
         env:
         - name: GITEA_INSTANCE_URL
           value: "https://github0213.com"
         - name: DOCKER_HOST
-          value: "unix:///var/run/docker.sock"
+          value: "tcp://localhost:2375"
         volumeMounts:
-        - name: docker-sock
-          mountPath: /var/run/docker.sock
         - name: runner-data
           mountPath: /data
         - name: runner-secret
@@ -51,13 +81,9 @@ spec:
             memory: 256Mi
           limits:
             memory: 1Gi
-        securityContext:
-          privileged: true
       volumes:
-      - name: docker-sock
-        hostPath:
-          path: /var/run/docker.sock
-          type: Socket
+      - name: docker-graph
+        emptyDir: {}
       - name: runner-data
         emptyDir: {}
       - name: runner-secret
@@ -69,4 +95,3 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
         effect: NoSchedule
-      restartPolicy: Always
