@@ -26,6 +26,8 @@ spec:
           app: $(tt.params.repo-name)
           branch: $(tt.params.git-branch)
       spec:
+        timeouts:
+          pipeline: 30m
         pipelineRef:
           name: nextjs-build-deploy
         params:
@@ -79,6 +81,8 @@ spec:
           app: $(tt.params.repo-name)
           branch: $(tt.params.git-branch)
       spec:
+        timeouts:
+          pipeline: 30m
         pipelineRef:
           name: fastapi-build-deploy
         params:
