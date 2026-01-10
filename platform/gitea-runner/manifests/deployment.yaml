@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea-runner
+  namespace: gitea
+  labels:
+    app: gitea-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitea-runner
+  template:
+    metadata:
+      labels:
+        app: gitea-runner
+    spec:
+      containers:
+      - name: runner
+        image: gitea/act_runner:latest
+        command:
+        - sh
+        - -c
+        - |
+          while ! wget -q --spider http://gitea-http.gitea.svc:3000/api/v1/version; do
+            echo "Waiting for Gitea to be ready..."
+            sleep 5
+          done
+          act_runner register --no-interactive \
+            --instance https://github0213.com \
+            --token $(cat /secrets/token) \
+            --name k3s-runner \
+            --labels k3s-home:docker://node:20-alpine,ubuntu-latest:docker://ubuntu:latest,arm64:host
+          act_runner daemon
+        env:
+        - name: GITEA_INSTANCE_URL
+          value: "https://github0213.com"
+        - name: DOCKER_HOST
+          value: "unix:///var/run/docker.sock"
+        volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+        - name: runner-data
+          mountPath: /data
+        - name: runner-secret
+          mountPath: /secrets
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        securityContext:
+          privileged: true
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+          type: Socket
+      - name: runner-data
+        emptyDir: {}
+      - name: runner-secret
+        secret:
+          secretName: gitea-runner-secret
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      restartPolicy: Always
