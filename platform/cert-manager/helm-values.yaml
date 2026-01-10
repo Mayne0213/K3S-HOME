@@ -4,7 +4,7 @@
 # Install CRDs with Helm
 installCRDs: true
 
-replicaCount: 2
+replicaCount: 1
 
 resources:
   requests:
@@ -14,7 +14,7 @@ resources:
     memory: 96Mi
 
 webhook:
-  replicaCount: 2
+  replicaCount: 1
   resources:
     requests:
       cpu: 23m
@@ -33,7 +33,7 @@ webhook:
             topologyKey: kubernetes.io/hostname
 
 cainjector:
-  replicaCount: 2
+  replicaCount: 1
   resources:
     requests:
       cpu: 23m
