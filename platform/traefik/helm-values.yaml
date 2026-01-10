@@ -28,22 +28,10 @@ spec:
                   app.kubernetes.io/name: traefik
               topologyKey: kubernetes.io/hostname
 
-    # Traefik Dashboard 활성화
-    dashboard:
-      enabled: true
-
-    # API 활성화 (Dashboard에서 필요)
-    api:
-      dashboard: true
-
     # Cross-namespace middleware 허용
     providers:
       kubernetesCRD:
         allowCrossNamespace: true
-
-    # CLI 추가 인자
-    additionalArguments:
-      - "--api.insecure=true"
 
     # ports 설정
     ports:
