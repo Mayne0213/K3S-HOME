@@ -6,15 +6,8 @@
 # GLOBAL SETTINGS
 # =============================================================================
 global:
-  # Deploy to control-plane node
-  nodeSelector:
-    node-role.kubernetes.io/control-plane: "true"
-
-  # Tolerate control-plane taint
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
+  # High priority for critical GitOps infrastructure
+  priorityClassName: high-priority
 
 # =============================================================================
 # CONFIGS (ConfigMaps)

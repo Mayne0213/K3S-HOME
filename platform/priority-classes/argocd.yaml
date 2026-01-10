@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Mayne0213/platform.git
+    repoURL: https://github.com/K3S-HOME/platform.git
     targetRevision: HEAD
     path: priority-classes/manifests
   destination:
