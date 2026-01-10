@@ -47,7 +47,9 @@ spec:
         - clone
       params:
         - name: IMAGE
-          value: zot0213.kro.kr/$(params.app-name):$(params.git-revision)
+          value: zot0213.kro.kr/$(params.app-name)
+        - name: TAG
+          value: $(params.git-revision)
         - name: DOCKERFILE
           value: ./Dockerfile
         - name: CONTEXT
