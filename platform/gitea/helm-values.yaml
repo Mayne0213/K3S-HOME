@@ -103,14 +103,15 @@ ingress:
     - github0213.com
 
 # =============================================================================
-# RESOURCES
+# RESOURCES (VPA lowerBound/upperBound)
 # =============================================================================
 resources:
   requests:
-    cpu: 63m
-    memory: 237Mi
+    cpu: 15m
+    memory: 247Mi
   limits:
-    memory: 237Mi
+    cpu: 46m
+    memory: 333Mi
 
 # =============================================================================
 # POD CONFIGURATION
