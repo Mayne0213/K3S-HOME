@@ -61,13 +61,12 @@ controller:
   args:
     appResyncPeriod: "0"
 
-  # Resource settings (VPA lowerBound/upperBound)
+  # Resource settings (no CPU limit for stability)
   resources:
     requests:
       cpu: 22m
       memory: 1388Mi
     limits:
-      cpu: 839m
       memory: 1861Mi
 
   # Schedule on master node
@@ -102,13 +101,12 @@ server:
       traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia-auth@kubernetescrd
     tls: true
 
-  # Resource settings (VPA lowerBound/upperBound)
+  # Resource settings (no CPU limit for stability)
   resources:
     requests:
       cpu: 15m
       memory: 163Mi
     limits:
-      cpu: 15m
       memory: 218Mi
 
 # =============================================================================
@@ -124,26 +122,24 @@ repoServer:
     serviceMonitor:
       enabled: true
 
-  # Resource settings (VPA lowerBound/upperBound)
+  # Resource settings (no CPU limit for stability)
   resources:
     requests:
       cpu: 15m
       memory: 225Mi
     limits:
-      cpu: 1000m
       memory: 1310Mi
 
 # =============================================================================
 # REDIS (Deployment)
 # =============================================================================
 redis:
-  # Resource settings (VPA lowerBound/upperBound)
+  # Resource settings (no CPU limit for stability)
   resources:
     requests:
       cpu: 15m
       memory: 100Mi
     limits:
-      cpu: 15m
       memory: 100Mi
 
 # =============================================================================

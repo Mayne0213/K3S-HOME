@@ -103,14 +103,13 @@ ingress:
     - github0213.com
 
 # =============================================================================
-# RESOURCES (VPA lowerBound/upperBound)
+# RESOURCES (no CPU limit for stability)
 # =============================================================================
 resources:
   requests:
     cpu: 15m
     memory: 247Mi
   limits:
-    cpu: 46m
     memory: 333Mi
 
 # =============================================================================
