@@ -13,6 +13,11 @@ images:
     tag: "1.25.1"
     dest: storage/cnpg
 
+  - name: postgresql
+    source: ghcr.io/cloudnative-pg/postgresql
+    tag: "16.6"
+    dest: storage/postgresql
+
   - name: pgweb
     source: docker.io/sosedoff/pgweb
     tag: "0.17.0"
@@ -47,7 +52,7 @@ images:
   - name: alpine-git
     source: docker.io/alpine/git
     tag: v2.47.1
-    dest: applications/alpine-git
+    dest: platform/alpine-git
 
   - name: code-server
     source: docker.io/codercom/code-server
@@ -85,6 +90,11 @@ images:
     source: quay.io/buildah/stable
     tag: v1.33
     dest: platform/buildah
+
+  - name: nginx
+    source: docker.io/library/nginx
+    tag: alpine
+    dest: platform/nginx
 
   # Security
   - name: falco
