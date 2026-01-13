@@ -35,6 +35,35 @@ spec:
         - ref: gitea-push-binding
       template:
         ref: nextjs-build-template
+    - name: gitea-push-docusaurus
+      interceptors:
+        - ref:
+            name: "github"
+          params:
+            - name: "secretRef"
+              value:
+                secretName: gitea-webhook-secret
+                secretKey: webhook-secret
+            - name: "eventTypes"
+              value: ["push"]
+        - ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: "body.ref.startsWith('refs/heads/main')"
+            - name: "overlays"
+              value:
+                - key: branch_name
+                  expression: "body.ref.split('/')[2]"
+        - ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: "body.repository.name in ['docusaurus']"
+      bindings:
+        - ref: gitea-push-binding
+      template:
+        ref: docusaurus-build-template
     - name: gitea-push-fastapi
       interceptors:
         - ref:
@@ -59,11 +88,40 @@ spec:
             name: "cel"
           params:
             - name: "filter"
-              value: "body.repository.name in ['joossam', 'mas']"
+              value: "body.repository.name in ['joossam']"
       bindings:
         - ref: gitea-push-binding
       template:
         ref: fastapi-build-template
+    - name: gitea-push-mas
+      interceptors:
+        - ref:
+            name: "github"
+          params:
+            - name: "secretRef"
+              value:
+                secretName: gitea-webhook-secret
+                secretKey: webhook-secret
+            - name: "eventTypes"
+              value: ["push"]
+        - ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: "body.ref.startsWith('refs/heads/main')"
+            - name: "overlays"
+              value:
+                - key: branch_name
+                  expression: "body.ref.split('/')[2]"
+        - ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: "body.repository.name in ['mas']"
+      bindings:
+        - ref: gitea-push-binding
+      template:
+        ref: mas-build-template
     # Develop branch triggers for -dev deployments
     - name: gitea-push-nextjs-dev
       interceptors:

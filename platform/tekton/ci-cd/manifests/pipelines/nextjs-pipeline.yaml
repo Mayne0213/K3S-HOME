@@ -24,6 +24,10 @@ spec:
       description: Build arguments (key=value format, one per line)
       type: string
       default: ""
+    - name: image-prefix
+      description: Image path prefix (e.g., web-apps/)
+      type: string
+      default: ""
   workspaces:
     - name: shared-workspace
       description: Shared workspace for all tasks
@@ -51,7 +55,7 @@ spec:
         - clone
       params:
         - name: IMAGE
-          value: zot0213.kro.kr/$(params.app-name)
+          value: zot0213.kro.kr/$(params.image-prefix)$(params.app-name)
         - name: TAG
           value: $(params.git-revision)
         - name: DOCKERFILE
