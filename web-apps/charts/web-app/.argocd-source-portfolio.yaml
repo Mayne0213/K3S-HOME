@@ -1,8 +1,0 @@
-helm:
-  parameters:
-  - name: image.name
-    value: zot0213.kro.kr/web-apps/portfolio
-    forcestring: true
-  - name: image.tag
-    value: latest@sha256:14f9951104c200c51ea44e12b5f13d3adc16b7d8a9beae3aa256dfb1d09da2a2
-    forcestring: true
