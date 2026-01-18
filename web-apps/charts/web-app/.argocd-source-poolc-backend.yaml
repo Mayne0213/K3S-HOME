@@ -4,5 +4,5 @@ helm:
     value: zot0213.kro.kr/web-apps/poolc-backend
     forcestring: true
   - name: image.tag
-    value: latest@sha256:425b0ccab9d94ac8faebd8f817d3b162c1b6a4d3ead76af7df40b1a8940d02fc
+    value: latest@sha256:556f627455674da11e72acf8d4cb239c3ba53fcbe30d3fb7ac8f00ca377dac4a
     forcestring: true
