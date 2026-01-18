@@ -4,7 +4,7 @@ name: poolc-dev-backend
 image:
   registry: zot0213.kro.kr
   repository: web-apps/poolc-backend
-  tag: sha256:b5b212e0d00963fcffaa222500b20d8441d0c75d9e851e8ae830fc3c120bbe17 # Updated by ArgoCD Image Updater
+  tag: b5b212e0d009
   pullPolicy: Always
 imagePullSecrets:
   - name: zot-registry-credentials
