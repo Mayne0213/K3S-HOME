@@ -4,7 +4,7 @@ name: jotion
 image:
   registry: zot0213.kro.kr
   repository: web-apps/jotion
-  tag: 2646b160 # Updated by ArgoCD Image Updater
+  tag: c8aefc7d # Updated by ArgoCD Image Updater
   pullPolicy: Always
 imagePullSecrets:
   - name: zot-registry-credentials
