@@ -138,5 +138,3 @@ ingress:
         hosts:
           - mas0213.kro.kr
           - www.mas0213.kro.kr
-image:
-  tag: 7777de55
